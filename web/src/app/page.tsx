@@ -12,17 +12,23 @@ export default function SearchPage() {
   const query = decodeURIComponent(searchParams.get("q") || "");
   //@ts-ignore
   const rid = decodeURIComponent(searchParams.get("rid") || "");
-  const [apiUrl, setApiUrl] = useState(() => {
-    const localApiUrl = localStorage?.getItem("apiUrl");
-    return localApiUrl || process.env.NEXT_PUBLIC_API_URL;
-  });
+  const [apiUrl, setApiUrl] = useState(process.env.NEXT_PUBLIC_API_URL);
+
+  useEffect(() => {
+    const localApiUrl = localStorage.getItem("apiUrl");
+    if (localApiUrl) {
+      setApiUrl(localApiUrl);
+    }
+  }, []);
 
   const [uploadedDocuments, setUploadedDocuments] = useState([]);
   const [userId, setUserId] = useState("");
-  const [availableUserIds, setAvailableUserIds] = useState(() => {
-    const localData = localStorage?.getItem("availableUserIds");
-    return localData ? JSON.parse(localData) : [];
-  });
+  const [availableUserIds, setAvailableUserIds] = useState([]);
+
+  useEffect(() => {
+    const localData = typeof window !== "undefined" ? localStorage.getItem("availableUserIds") : [];
+    setAvailableUserIds(localData ? JSON.parse(localData) : []);
+  }, []);
 
   const fileInputRef = useRef(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -118,9 +124,9 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="absolute inset-0 bg-zinc-900">
-      <div className="mx-auto max-w-6xl mt-4 mb-12 absolute inset-4 md:inset-8 ">
-        <label htmlFor="apiUrl" className="block text-sm font-medium text-zinc-300 ">
+    <div className="bg-zinc-900 min-h-screen pt-4 sm:pt-8">
+      <div className="mx-auto max-w-6xl">
+        <label htmlFor="apiUrl" className="block text-sm font-medium text-zinc-300 mb-1">
           Pipeline Deployment URL
         </label>
         <input
@@ -129,14 +135,14 @@ export default function SearchPage() {
           name="apiUrl"
           value={apiUrl}
           onChange={(e) => handleApiUrlChange(e.target.value)}
-          className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-2xl shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-2xl shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm mb-4"
         />
       </div>
 
-      <div className="mx-auto max-w-6xl absolute inset-4 md:inset-8 flex mt-20">
+      <div className="mx-auto max-w-6xl flex">
         {/* Sidebar */}
-        <div className="w-64 bg-zinc-800 p-3 rounded-l-2xl border-2 border-zinc-600">
-          <div className="flex items-center justify-between mb-6 pt-4">
+        <div className="w-64 bg-zinc-800 px-2 sm:px-3 pt-2 sm:pt-3 rounded-l-2xl border-2 border-zinc-600">
+          <div className="flex items-center justify-between mb-2 sm:mb-3">
             <h2 className="text-lg text-ellipsis font-bold text-blue-500">
               Documents
             </h2>
@@ -151,7 +157,7 @@ export default function SearchPage() {
                 type="button"
                 onClick={handleUploadButtonClick}
                 disabled={isUploading}
-                className={`pl-2 pr-2 text-white py-2 px-4 rounded ${
+                className={`pl-2 pr-2 text-white py-2 px-4 rounded-lg ${
                   isUploading
                     ? "bg-blue-400 cursor-not-allowed"
                     : "bg-blue-500 hover:bg-blue-600"
@@ -161,10 +167,10 @@ export default function SearchPage() {
               </button>
             </form>
           </div>
-          <div className="border-t border-white-600 mb-2"></div>
+          <hr className="border-t border-zinc-600 my-2" />
           <ul>
             {uploadedDocuments?.map((document, index) => (
-              <li key={index} className="text-zinc-300 mt-2">
+              <li key={index} className="text-zinc-300 mb-2 text-sm">
                 {document}
               </li>
             ))}
@@ -188,12 +194,12 @@ export default function SearchPage() {
               userId={userId}
               apiUrl={apiUrl}
               uploadedDocuments={uploadedDocuments}
-            ></Result>
+             />
           </div>
           <div className="h-80 pointer-events-none w-full backdrop-filter absolute bottom-0 bg-gradient-to-b from-transparent to-zinc-900 [mask-image:linear-gradient(to_top,zinc-800,transparent)]"></div>
           <div className="absolute inset-x-0 bottom-6 px-4 md:px-8">
             <div className="w-full">
-              <Search ></Search>
+              <Search uploadedDocuments={uploadedDocuments}/>
             </div>
           </div>
         </div>

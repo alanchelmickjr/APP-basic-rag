@@ -43,7 +43,7 @@ export const Result: FC<{ query: string; rid: string; userId: string, apiUrl: st
         </div>
       )} */}
       {uploadedDocuments?.length === 0 && (
-        <div className="absolute inset-4 flex items-center justify-center bg-white/40 backdrop-blur-sm">
+        <div className="absolute inset-4 flex items-center justify-center bg-white/40 backdrop-blur-sm rounded-2xl">
           <div className="p-4 bg-white shadow-2xl rounded text-blue-500 font-medium flex gap-4">
             {/* <Annoyed></Annoyed> */}
             Please upload atleast one document to submit queries.
@@ -51,7 +51,7 @@ export const Result: FC<{ query: string; rid: string; userId: string, apiUrl: st
         </div>
       )}
       {uploadedDocuments?.length !== 0 && query === '' && (
-        <div className="absolute inset-4 flex items-center justify-center bg-white/40 backdrop-blur-sm">
+        <div className="absolute inset-4 flex items-center justify-center bg-white/40 backdrop-blur-sm rounded-2xl">
           <div className="p-4 bg-white shadow-2xl rounded text-blue-500 font-medium flex gap-4">
             {/* <Annoyed></Annoyed> */}
             Please submit a query.

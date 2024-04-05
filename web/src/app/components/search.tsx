@@ -13,7 +13,11 @@ function debounce(func, wait) {
   };
 }
 
-export const Search: FC = () => {
+interface SearchProps {
+  uploadedDocuments: any[];
+}
+
+export const Search: FC<SearchProps> = ({uploadedDocuments}) => {
   const [value, setValue] = useState("");
   const router = useRouter();
 
@@ -42,10 +46,12 @@ export const Search: FC = () => {
           autoFocus
           placeholder="Ask SciPhi AI anything ..."
           className="px-2 pr-6 w-full rounded-md flex-1 outline-none bg-zinc-800 text-zinc-200"
+          disabled={!uploadedDocuments || uploadedDocuments.length === 0}
         />
         <button
           type="submit"
           className="w-auto py-1 px-2 bg-zinc-400 border-black text-black fill-white active:scale-95 border overflow-hidden relative rounded-xl hover:bg-zinc-200"
+          disabled={!uploadedDocuments || uploadedDocuments.length === 0}
         >
           <ArrowRight size={16} />
         </button>

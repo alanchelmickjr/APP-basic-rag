@@ -8,7 +8,7 @@ class MyDocument extends Document {
           {/* Existing tags */}
           
           {/* Google Analytics */}
-          <meta charset="UTF-8"/>
+          <meta charSet="UTF-8"/>
 
           <script async src="https://www.googletagmanager.com/gtag/js?id=G-RVJJGNDDB2"></script>
           <script
