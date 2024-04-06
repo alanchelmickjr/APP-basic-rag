@@ -50,7 +50,10 @@ export default function SearchPage() {
   useEffect(() => {
     const fetchUserDocuments = async () => {
       try {
-        if (userId === "") return;
+        if (userId === ""){
+          setUploadedDocuments([]);
+          return;
+        }
         const response = await fetch(
           `${apiUrl}/get_user_documents/?user_id=${userId}`
         );
